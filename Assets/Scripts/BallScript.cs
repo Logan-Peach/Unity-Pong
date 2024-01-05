@@ -12,15 +12,19 @@ public class BallScript : MonoBehaviour
 
     public bool destroyed = false;
 
-    [SerializeField] private float ballSpeed = 3f;
+    [SerializeField] private float initialBallSpeed = 3f;
+    private float ballSpeed;
 
     private Rigidbody2D rb;
     [SerializeField] private AudioSource hitSoundEffect;
 
-    [SerializeField] ScoreScript score;
+    [SerializeField] private SpeedUpItemScript speedUpItemScript;
+    [SerializeField] private ScoreScript score;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        ballSpeed = initialBallSpeed;
 
         if (!ScoreScript.winner.Equals("none"))
         {
@@ -41,6 +45,20 @@ public class BallScript : MonoBehaviour
         {
             Invoke(nameof(Down), 1f);
             yDir = "down";
+        }
+    }
+
+    private void Update()
+    {
+        if (transform.position.x > 5)
+        {
+            transform.position = new Vector3(4.8f, transform.position.y, transform.position.z);
+            Left();
+        }
+        else if (transform.position.x < -5)
+        {
+            transform.position = new Vector3(-4.8f, transform.position.y, transform.position.z);
+            Right();
         }
     }
 
@@ -128,6 +146,12 @@ public class BallScript : MonoBehaviour
             }
             Stop();
             Invoke("Start", 1f);
+        }
+        if (collision.gameObject.CompareTag("SpeedUp"))
+        {
+            speedUpItemScript.Move();
+            ballSpeed += 0.5f;
+            Debug.Log(ballSpeed);
         }
     }
 }

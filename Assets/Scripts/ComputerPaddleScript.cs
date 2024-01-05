@@ -43,14 +43,12 @@ public class ComputerPaddleScript : MonoBehaviour
             {
                 xDir = "left";
                 float random = UnityEngine.Random.Range(lowerBoundRand, upperBoundRand);
-                Debug.Log(random.ToString());
                 Invoke(nameof(Left), random);
             }
             if (ballScript.transform.position.x > transform.position.x)
             {
                 xDir = "right";
                 float random = UnityEngine.Random.Range(lowerBoundRand, upperBoundRand);
-                Debug.Log(random.ToString());
                 Invoke(nameof(Right), random);
             }
         }
